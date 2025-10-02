@@ -864,14 +864,21 @@ function displayAmiiboResults(amiiboList) {
     tableBody.innerHTML = '';
     
     // Add rows for each amiibo
-    amiiboList.forEach(amiibo => {
+    amiiboList.forEach((amiibo, index) => {
         const row = document.createElement('tr');
+        row.style.cursor = 'pointer';
         row.innerHTML = `
             <td>${amiibo.amiiboSeries || 'N/A'}</td>
             <td>${amiibo.character || 'N/A'}</td>
             <td>${amiibo.gameSeries || 'N/A'}</td>
             <td>${amiibo.type || 'N/A'}</td>
         `;
+        
+        // Add click handler to show amiibo info
+        row.addEventListener('click', () => {
+            showAmiiboInfo(amiibo);
+        });
+        
         tableBody.appendChild(row);
     });
     
@@ -909,5 +916,70 @@ function updateGuideAndResults() {
     } else {
         hideGuideText();
         queryAmiiboResults();
+    }
+}
+
+// Amiibo Info Card functions
+function showAmiiboInfo(amiibo) {
+    // Update card title with amiibo name
+    document.getElementById('card-title').textContent = amiibo.name || 'Amiibo Information';
+    
+    // Update amiibo image
+    const imageElement = document.getElementById('amiibo-image');
+    if (amiibo.image) {
+        imageElement.src = amiibo.image;
+        imageElement.alt = amiibo.name || 'Amiibo Image';
+    } else {
+        imageElement.src = '';
+        imageElement.alt = 'No image available';
+    }
+    
+    // Update all the detail fields
+    document.getElementById('card-name').textContent = amiibo.name || '-';
+    document.getElementById('card-character').textContent = amiibo.character || '-';
+    document.getElementById('card-amiibo-series').textContent = amiibo.amiiboSeries || '-';
+    document.getElementById('card-game-series').textContent = amiibo.gameSeries || '-';
+    document.getElementById('card-type').textContent = amiibo.type || '-';
+    document.getElementById('card-head').textContent = amiibo.head || '-';
+    document.getElementById('card-tail').textContent = amiibo.tail || '-';
+    
+    // Update release dates
+    if (amiibo.release) {
+        document.getElementById('card-release-na').textContent = amiibo.release.na || '-';
+        document.getElementById('card-release-eu').textContent = amiibo.release.eu || '-';
+        document.getElementById('card-release-jp').textContent = amiibo.release.jp || '-';
+        document.getElementById('card-release-au').textContent = amiibo.release.au || '-';
+    } else {
+        document.getElementById('card-release-na').textContent = '-';
+        document.getElementById('card-release-eu').textContent = '-';
+        document.getElementById('card-release-jp').textContent = '-';
+        document.getElementById('card-release-au').textContent = '-';
+    }
+    
+    // Show the card
+    document.getElementById('amiibo-info-card').style.display = 'block';
+    
+    // Add event listener for close button
+    document.getElementById('close-card').onclick = hideAmiiboInfo;
+    
+    // Add event listener for clicking outside the card
+    document.getElementById('amiibo-info-card').onclick = function(event) {
+        if (event.target === this) {
+            hideAmiiboInfo();
+        }
+    };
+    
+    // Add escape key listener
+    document.addEventListener('keydown', handleEscapeKey);
+}
+
+function hideAmiiboInfo() {
+    document.getElementById('amiibo-info-card').style.display = 'none';
+    document.removeEventListener('keydown', handleEscapeKey);
+}
+
+function handleEscapeKey(event) {
+    if (event.key === 'Escape') {
+        hideAmiiboInfo();
     }
 }
