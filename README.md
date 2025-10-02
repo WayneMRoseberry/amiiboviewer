@@ -2,6 +2,11 @@
 
 A modern, responsive web application for browsing and discovering Nintendo Amiibo figures, cards, and accessories. Built with vanilla JavaScript, HTML5, and CSS3, this application provides an intuitive interface for filtering and exploring the vast collection of Amiibo products.
 
+## Testing
+
+This project exists to serve as a target for testing exercises. There are no tests in this project.
+Clone the repository and run locally or deploy to your own web server to do your own testing.
+
 ## 🌟 Features
 
 ### **Multi-Filter Search System**
