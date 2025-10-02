@@ -13,7 +13,98 @@
         </header>
         <main>
             <div class="content">
-                <!-- Empty first page content will go here -->
+                <div class="search-row">
+                    <div class="search-container">
+                        <label for="amiibo-search">Amiibo</label>
+                        <div class="dropdown-container">
+                            <div class="input-with-clear">
+                                <input type="text" id="amiibo-search" placeholder="Search for an amiibo character..." autocomplete="off">
+                                <button type="button" class="clear-btn" id="amiibo-clear" title="Clear selection" style="display: none;">×</button>
+                            </div>
+                            <div class="dropdown" id="amiibo-dropdown">
+                                <div class="dropdown-content" id="dropdown-content">
+                                    <div class="loading">Loading amiibo characters...</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="search-container">
+                        <label for="gameseries-search">Game Series</label>
+                        <div class="dropdown-container">
+                            <div class="input-with-clear">
+                                <input type="text" id="gameseries-search" placeholder="Search for a game series..." autocomplete="off">
+                                <button type="button" class="clear-btn" id="gameseries-clear" title="Clear selection" style="display: none;">×</button>
+                            </div>
+                            <div class="dropdown" id="gameseries-dropdown">
+                                <div class="dropdown-content" id="gameseries-dropdown-content">
+                                    <div class="loading">Loading game series...</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="search-container">
+                        <label for="amiiboseries-search">Amiibo Series</label>
+                        <div class="dropdown-container">
+                            <div class="input-with-clear">
+                                <input type="text" id="amiiboseries-search" placeholder="Search for an amiibo series..." autocomplete="off">
+                                <button type="button" class="clear-btn" id="amiiboseries-clear" title="Clear selection" style="display: none;">×</button>
+                            </div>
+                            <div class="dropdown" id="amiiboseries-dropdown">
+                                <div class="dropdown-content" id="amiiboseries-dropdown-content">
+                                    <div class="loading">Loading amiibo series...</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="search-container">
+                        <label for="type-search">Type</label>
+                        <div class="dropdown-container">
+                            <div class="input-with-clear">
+                                <input type="text" id="type-search" placeholder="Search for a type..." autocomplete="off">
+                                <button type="button" class="clear-btn" id="type-clear" title="Clear selection" style="display: none;">×</button>
+                            </div>
+                            <div class="dropdown" id="type-dropdown">
+                                <div class="dropdown-content" id="type-dropdown-content">
+                                    <div class="loading">Loading types...</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="selected-info" id="selected-info" style="display: none;">
+                    <h3>Selected Character</h3>
+                    <div class="character-details">
+                        <p><strong>Name:</strong> <span id="character-name"></span></p>
+                        <p><strong>Key:</strong> <span id="character-key"></span></p>
+                    </div>
+                </div>
+                
+                <div class="selected-info" id="selected-gameseries-info" style="display: none;">
+                    <h3>Selected Game Series</h3>
+                    <div class="gameseries-details">
+                        <p><strong>Name:</strong> <span id="gameseries-name"></span></p>
+                        <p><strong>Key:</strong> <span id="gameseries-key"></span></p>
+                    </div>
+                </div>
+                
+                <div class="selected-info" id="selected-amiiboseries-info" style="display: none;">
+                    <h3>Selected Amiibo Series</h3>
+                    <div class="amiiboseries-details">
+                        <p><strong>Name:</strong> <span id="amiiboseries-name"></span></p>
+                        <p><strong>Key:</strong> <span id="amiiboseries-key"></span></p>
+                    </div>
+                </div>
+                
+                <div class="selected-info" id="selected-type-info" style="display: none;">
+                    <h3>Selected Type</h3>
+                    <div class="type-details">
+                        <p><strong>Name:</strong> <span id="type-name"></span></p>
+                        <p><strong>Key:</strong> <span id="type-key"></span></p>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
