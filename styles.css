@@ -236,6 +236,46 @@ main {
     border-bottom: 2px solid #2980b9;
 }
 
+.amiibo-table th.sortable {
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    transition: background-color 0.2s ease;
+}
+
+.amiibo-table th.sortable:hover {
+    background: #2980b9;
+}
+
+.sort-indicator {
+    margin-left: 8px;
+    font-size: 0.9rem;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.amiibo-table th.sortable:hover .sort-indicator {
+    opacity: 1;
+}
+
+.amiibo-table th.sort-asc .sort-indicator {
+    opacity: 1;
+    content: "↑";
+}
+
+.amiibo-table th.sort-desc .sort-indicator {
+    opacity: 1;
+    content: "↓";
+}
+
+.amiibo-table th.sort-asc .sort-indicator::after {
+    content: " ↑";
+}
+
+.amiibo-table th.sort-desc .sort-indicator::after {
+    content: " ↓";
+}
+
 .amiibo-table td {
     padding: 12px 8px;
     border-bottom: 1px solid #ecf0f1;

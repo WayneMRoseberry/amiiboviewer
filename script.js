@@ -8,6 +8,11 @@ let selectedGameSeries = null;
 let selectedAmiiboSeries = null;
 let selectedType = null;
 
+// Sorting state
+let currentAmiiboData = [];
+let currentSortColumn = null;
+let currentSortDirection = 'asc';
+
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Amiibo Viewer application loaded');
     
@@ -858,6 +863,23 @@ function queryAmiiboResults() {
 }
 
 function displayAmiiboResults(amiiboList) {
+    // Store the current data for sorting
+    currentAmiiboData = amiiboList;
+    
+    // Clear existing sort indicators
+    clearSortIndicators();
+    
+    // Render the table
+    renderAmiiboTable(amiiboList);
+    
+    // Add sorting event listeners
+    setupSorting();
+    
+    // Show the table
+    document.getElementById('amiibo-table').style.display = 'table';
+}
+
+function renderAmiiboTable(amiiboList) {
     const tableBody = document.getElementById('amiibo-table-body');
     
     // Clear existing rows
@@ -881,9 +903,65 @@ function displayAmiiboResults(amiiboList) {
         
         tableBody.appendChild(row);
     });
+}
+
+function setupSorting() {
+    const sortableHeaders = document.querySelectorAll('.sortable');
     
-    // Show the table
-    document.getElementById('amiibo-table').style.display = 'table';
+    sortableHeaders.forEach(header => {
+        header.addEventListener('click', () => {
+            const column = header.dataset.column;
+            sortTable(column);
+        });
+    });
+}
+
+function sortTable(column) {
+    // Determine sort direction
+    if (currentSortColumn === column) {
+        // Toggle direction if same column
+        currentSortDirection = currentSortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+        // New column, default to ascending
+        currentSortDirection = 'asc';
+    }
+    
+    currentSortColumn = column;
+    
+    // Clear existing sort indicators
+    clearSortIndicators();
+    
+    // Add sort indicator to current column
+    const header = document.querySelector(`[data-column="${column}"]`);
+    header.classList.add(`sort-${currentSortDirection}`);
+    
+    // Sort the data
+    const sortedData = [...currentAmiiboData].sort((a, b) => {
+        let aValue = a[column] || '';
+        let bValue = b[column] || '';
+        
+        // Convert to lowercase for case-insensitive sorting
+        aValue = aValue.toString().toLowerCase();
+        bValue = bValue.toString().toLowerCase();
+        
+        if (currentSortDirection === 'asc') {
+            return aValue.localeCompare(bValue);
+        } else {
+            return bValue.localeCompare(aValue);
+        }
+    });
+    
+    // Re-render the table with sorted data
+    renderAmiiboTable(sortedData);
+    
+    console.log(`Sorted by ${column} (${currentSortDirection})`);
+}
+
+function clearSortIndicators() {
+    const headers = document.querySelectorAll('.sortable');
+    headers.forEach(header => {
+        header.classList.remove('sort-asc', 'sort-desc');
+    });
 }
 
 function clearAmiiboResults() {
@@ -897,6 +975,12 @@ function clearAmiiboResults() {
     document.getElementById('loading-results').style.display = 'none';
     document.getElementById('no-results-message').style.display = 'none';
     document.getElementById('error-message').style.display = 'none';
+    
+    // Reset sorting state
+    currentAmiiboData = [];
+    currentSortColumn = null;
+    currentSortDirection = 'asc';
+    clearSortIndicators();
 }
 
 // Guide text functions
