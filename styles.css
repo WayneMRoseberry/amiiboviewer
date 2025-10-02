@@ -184,57 +184,87 @@ main {
     font-style: italic;
 }
 
-/* Selected Character Info */
-.selected-info {
+/* Guide Text */
+.guide-text {
+    text-align: center;
     margin-top: 30px;
+    padding: 40px 20px;
+    color: #666;
+    font-style: italic;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.guide-text p {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+/* Amiibo Results Table */
+.amiibo-results-section {
+    margin-top: 40px;
     padding: 20px;
     background: #f8f9fa;
     border-radius: 8px;
-    text-align: left;
-    max-width: 400px;
-    margin-left: auto;
-    margin-right: auto;
 }
 
-.selected-info h3 {
-    margin-bottom: 15px;
+.amiibo-results-section h3 {
+    margin-bottom: 20px;
     color: #2c3e50;
     text-align: center;
 }
 
-.character-details p {
-    margin-bottom: 8px;
+.table-container {
+    overflow-x: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.character-details strong {
-    color: #34495e;
+.amiibo-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    font-size: 0.9rem;
 }
 
-/* Game Series Details */
-.gameseries-details p {
-    margin-bottom: 8px;
+.amiibo-table th {
+    background: #3498db;
+    color: white;
+    padding: 12px 8px;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 2px solid #2980b9;
 }
 
-.gameseries-details strong {
-    color: #34495e;
+.amiibo-table td {
+    padding: 12px 8px;
+    border-bottom: 1px solid #ecf0f1;
+    vertical-align: top;
 }
 
-/* Amiibo Series Details */
-.amiiboseries-details p {
-    margin-bottom: 8px;
+.amiibo-table tbody tr:hover {
+    background-color: #f8f9fa;
 }
 
-.amiiboseries-details strong {
-    color: #34495e;
+.amiibo-table tbody tr:nth-child(even) {
+    background-color: #fafafa;
 }
 
-/* Type Details */
-.type-details p {
-    margin-bottom: 8px;
+.amiibo-table tbody tr:nth-child(even):hover {
+    background-color: #f0f0f0;
 }
 
-.type-details strong {
-    color: #34495e;
+.loading-results,
+.no-results-message,
+.error-message {
+    text-align: center;
+    padding: 40px 20px;
+    color: #666;
+    font-style: italic;
+}
+
+.error-message {
+    color: #e74c3c;
 }
 
 /* Responsive design */
@@ -258,5 +288,14 @@ main {
     
     .search-container {
         flex: none;
+    }
+    
+    .amiibo-table {
+        font-size: 0.8rem;
+    }
+    
+    .amiibo-table th,
+    .amiibo-table td {
+        padding: 8px 4px;
     }
 }

@@ -609,8 +609,8 @@ function selectCharacter(name, key) {
     // Hide dropdown
     hideCharacterDropdown();
     
-    // Display selected character info
-    displaySelectedCharacter(name, key);
+    // Query amiibo results
+    queryAmiiboResults();
     
     console.log('Selected character:', name, key);
 }
@@ -627,8 +627,8 @@ function selectGameSeries(name, key) {
     // Hide dropdown
     hideGameSeriesDropdown();
     
-    // Display selected game series info
-    displaySelectedGameSeries(name, key);
+    // Query amiibo results
+    queryAmiiboResults();
     
     console.log('Selected game series:', name, key);
 }
@@ -645,8 +645,8 @@ function selectAmiiboSeries(name, key) {
     // Hide dropdown
     hideAmiiboSeriesDropdown();
     
-    // Display selected amiibo series info
-    displaySelectedAmiiboSeries(name, key);
+    // Query amiibo results
+    queryAmiiboResults();
     
     console.log('Selected amiibo series:', name, key);
 }
@@ -663,35 +663,12 @@ function selectType(name, key) {
     // Hide dropdown
     hideTypeDropdown();
     
-    // Display selected type info
-    displaySelectedType(name, key);
+    // Query amiibo results
+    queryAmiiboResults();
     
     console.log('Selected type:', name, key);
 }
 
-function displaySelectedCharacter(name, key) {
-    document.getElementById('character-name').textContent = name;
-    document.getElementById('character-key').textContent = key;
-    document.getElementById('selected-info').style.display = 'block';
-}
-
-function displaySelectedGameSeries(name, key) {
-    document.getElementById('gameseries-name').textContent = name;
-    document.getElementById('gameseries-key').textContent = key;
-    document.getElementById('selected-gameseries-info').style.display = 'block';
-}
-
-function displaySelectedAmiiboSeries(name, key) {
-    document.getElementById('amiiboseries-name').textContent = name;
-    document.getElementById('amiiboseries-key').textContent = key;
-    document.getElementById('selected-amiiboseries-info').style.display = 'block';
-}
-
-function displaySelectedType(name, key) {
-    document.getElementById('type-name').textContent = name;
-    document.getElementById('type-key').textContent = key;
-    document.getElementById('selected-type-info').style.display = 'block';
-}
 
 function showCharacterDropdown() {
     document.getElementById('amiibo-dropdown').classList.add('show');
@@ -759,11 +736,11 @@ function clearCharacterSelection() {
     // Hide clear button
     document.getElementById('amiibo-clear').style.display = 'none';
     
-    // Hide selected info
-    document.getElementById('selected-info').style.display = 'none';
-    
     // Show all characters again
     displayCharacters(amiiboCharacters);
+    
+    // Clear and hide table, show guide text if no filters selected
+    updateGuideAndResults();
     
     console.log('Character selection cleared');
 }
@@ -777,11 +754,11 @@ function clearGameSeriesSelection() {
     // Hide clear button
     document.getElementById('gameseries-clear').style.display = 'none';
     
-    // Hide selected info
-    document.getElementById('selected-gameseries-info').style.display = 'none';
-    
     // Show all game series again
     displayGameSeries(gameSeries);
+    
+    // Clear and hide table, show guide text if no filters selected
+    updateGuideAndResults();
     
     console.log('Game series selection cleared');
 }
@@ -795,11 +772,11 @@ function clearAmiiboSeriesSelection() {
     // Hide clear button
     document.getElementById('amiiboseries-clear').style.display = 'none';
     
-    // Hide selected info
-    document.getElementById('selected-amiiboseries-info').style.display = 'none';
-    
     // Show all amiibo series again
     displayAmiiboSeries(amiiboSeries);
+    
+    // Clear and hide table, show guide text if no filters selected
+    updateGuideAndResults();
     
     console.log('Amiibo series selection cleared');
 }
@@ -813,11 +790,124 @@ function clearTypeSelection() {
     // Hide clear button
     document.getElementById('type-clear').style.display = 'none';
     
-    // Hide selected info
-    document.getElementById('selected-type-info').style.display = 'none';
-    
     // Show all types again
     displayAmiiboTypes(amiiboTypes);
     
+    // Clear and hide table, show guide text if no filters selected
+    updateGuideAndResults();
+    
     console.log('Type selection cleared');
+}
+
+// Amiibo results functions
+function queryAmiiboResults() {
+    // Check if at least one filter is selected
+    if (!selectedCharacter && !selectedGameSeries && !selectedAmiiboSeries && !selectedType) {
+        clearAmiiboResults();
+        showGuideText();
+        return;
+    }
+    
+    // Hide guide text and show results section and loading
+    hideGuideText();
+    document.getElementById('amiibo-results-section').style.display = 'block';
+    document.getElementById('loading-results').style.display = 'block';
+    document.getElementById('no-results-message').style.display = 'none';
+    document.getElementById('error-message').style.display = 'none';
+    
+    // Build query parameters
+    const params = new URLSearchParams();
+    
+    if (selectedCharacter) {
+        params.append('name', selectedCharacter.name);
+    }
+    if (selectedGameSeries) {
+        params.append('gameSeries', selectedGameSeries.name);
+    }
+    if (selectedAmiiboSeries) {
+        params.append('amiiboSeries', selectedAmiiboSeries.name);
+    }
+    if (selectedType) {
+        params.append('type', selectedType.name);
+    }
+    
+    // Make API request
+    const apiUrl = `https://www.amiiboapi.com/api/amiibo/?${params.toString()}`;
+    
+    fetch(apiUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById('loading-results').style.display = 'none';
+            
+            if (data.amiibo && data.amiibo.length > 0) {
+                displayAmiiboResults(data.amiibo);
+            } else {
+                document.getElementById('no-results-message').style.display = 'block';
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching amiibo results:', error);
+            document.getElementById('loading-results').style.display = 'none';
+            document.getElementById('error-message').style.display = 'block';
+        });
+}
+
+function displayAmiiboResults(amiiboList) {
+    const tableBody = document.getElementById('amiibo-table-body');
+    
+    // Clear existing rows
+    tableBody.innerHTML = '';
+    
+    // Add rows for each amiibo
+    amiiboList.forEach(amiibo => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${amiibo.amiiboSeries || 'N/A'}</td>
+            <td>${amiibo.character || 'N/A'}</td>
+            <td>${amiibo.gameSeries || 'N/A'}</td>
+            <td>${amiibo.type || 'N/A'}</td>
+        `;
+        tableBody.appendChild(row);
+    });
+    
+    // Show the table
+    document.getElementById('amiibo-table').style.display = 'table';
+}
+
+function clearAmiiboResults() {
+    // Hide results section
+    document.getElementById('amiibo-results-section').style.display = 'none';
+    
+    // Clear table body
+    document.getElementById('amiibo-table-body').innerHTML = '';
+    
+    // Hide all messages
+    document.getElementById('loading-results').style.display = 'none';
+    document.getElementById('no-results-message').style.display = 'none';
+    document.getElementById('error-message').style.display = 'none';
+}
+
+// Guide text functions
+function showGuideText() {
+    document.getElementById('guide-text').style.display = 'block';
+}
+
+function hideGuideText() {
+    document.getElementById('guide-text').style.display = 'none';
+}
+
+function updateGuideAndResults() {
+    // Check if any filters are selected
+    if (!selectedCharacter && !selectedGameSeries && !selectedAmiiboSeries && !selectedType) {
+        clearAmiiboResults();
+        showGuideText();
+    } else {
+        hideGuideText();
+        queryAmiiboResults();
+    }
 }

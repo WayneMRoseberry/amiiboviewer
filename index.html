@@ -74,35 +74,36 @@
                         </div>
                     </div>
                 </div>
-                <div class="selected-info" id="selected-info" style="display: none;">
-                    <h3>Selected Character</h3>
-                    <div class="character-details">
-                        <p><strong>Name:</strong> <span id="character-name"></span></p>
-                        <p><strong>Key:</strong> <span id="character-key"></span></p>
-                    </div>
+                
+                <div class="guide-text" id="guide-text">
+                    <p>Select a filter to see a list of amiibo.</p>
                 </div>
                 
-                <div class="selected-info" id="selected-gameseries-info" style="display: none;">
-                    <h3>Selected Game Series</h3>
-                    <div class="gameseries-details">
-                        <p><strong>Name:</strong> <span id="gameseries-name"></span></p>
-                        <p><strong>Key:</strong> <span id="gameseries-key"></span></p>
+                <div class="amiibo-results-section" id="amiibo-results-section" style="display: none;">
+                    <h3>Amiibo Results</h3>
+                    <div class="table-container">
+                        <table class="amiibo-table" id="amiibo-table">
+                            <thead>
+                                <tr>
+                                    <th>Amiibo Series</th>
+                                    <th>Character</th>
+                                    <th>Game Series</th>
+                                    <th>Type</th>
+                                </tr>
+                            </thead>
+                            <tbody id="amiibo-table-body">
+                                <!-- Results will be populated here -->
+                            </tbody>
+                        </table>
                     </div>
-                </div>
-                
-                <div class="selected-info" id="selected-amiiboseries-info" style="display: none;">
-                    <h3>Selected Amiibo Series</h3>
-                    <div class="amiiboseries-details">
-                        <p><strong>Name:</strong> <span id="amiiboseries-name"></span></p>
-                        <p><strong>Key:</strong> <span id="amiiboseries-key"></span></p>
+                    <div class="loading-results" id="loading-results" style="display: none;">
+                        <p>Loading amiibo results...</p>
                     </div>
-                </div>
-                
-                <div class="selected-info" id="selected-type-info" style="display: none;">
-                    <h3>Selected Type</h3>
-                    <div class="type-details">
-                        <p><strong>Name:</strong> <span id="type-name"></span></p>
-                        <p><strong>Key:</strong> <span id="type-key"></span></p>
+                    <div class="no-results-message" id="no-results-message" style="display: none;">
+                        <p>No amiibo found matching the selected filters.</p>
+                    </div>
+                    <div class="error-message" id="error-message" style="display: none;">
+                        <p>Error loading amiibo results. Please try again.</p>
                     </div>
                 </div>
             </div>
